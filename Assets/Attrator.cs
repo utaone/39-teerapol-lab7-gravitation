@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -6,10 +7,32 @@ using UnityEngine;
 public class Attrator : MonoBehaviour
 {
     [SerializeField] Rigidbody rb;
-    const float G = 0.6674f;
+    const float G = 667.4f;
 
-    public static List<Attrator> Attrators;
+    public static List<Attrator> Attractors;
 
+    private void FixedUpdate()
+    {
+        foreach (var attrator in Attractors)
+        {
+            if (attrator != this)
+            Attract(attrator);
+        }
+    }
+
+    //store planets in list of Attrators;
+    private void OnEnable()
+    {
+        if (Attractors == null)
+        {
+            Attractors = new List<Attrator>();
+        }
+        
+        Attractors.Add(this);
+            
+    }
+    
+    //calculate Universal Gravitation
     void Attract(Attrator other)
     {
         Rigidbody rbOther = other.rb;
